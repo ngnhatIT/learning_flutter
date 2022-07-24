@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_bloc/app_bloc_service.dart';
-import 'app.dart';
+import 'package:provider/provider.dart';
+
+import 'presentation/providers/provider.dart';
+import 'presentation/screens/screen.dart';
 
 void main() {
-  BlocOverrides.runZoned(() => runApp(const App()),
-      blocObserver: AppBlocService());
+  runApp(const App());
+}
+
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, value, child) => MaterialApp(
+          home: HomeScreen(),
+          themeMode: value.themeMode,
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+        ),
+      ),
+    );
+  }
 }
